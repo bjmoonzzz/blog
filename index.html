@@ -7,6 +7,7 @@
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="./static/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css">
 </head>
 <body>
   <div id="app"></div>
@@ -15,9 +16,17 @@
       name: '',
       repo: '',
       loadSidebar: true,
-      subMaxLevel: 2
+      subMaxLevel: 2,
+      mermaidConfig: {
+        querySelector: ".mermaid"
+      }
     }
   </script>
   <script src="./static/docsify.min.js"></script>
+  <script src="./static/mermaid.min.js"></script>
+  <script src="./static/docsify-mermaid.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: false });
+  </script>
 </body>
 </html>
