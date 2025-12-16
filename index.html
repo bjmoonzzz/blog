@@ -16,17 +16,15 @@
       name: '',
       repo: '',
       loadSidebar: true,
-      subMaxLevel: 2,
-      mermaidConfig: {
-        querySelector: ".mermaid"
-      }
+      subMaxLevel: 2
     }
   </script>
   <script src="./static/docsify.min.js"></script>
   <script src="./static/mermaid.min.js"></script>
-  <script src="./static/docsify-mermaid.js"></script>
   <script>
+    // Initialize configuration to prevent automatic operation
     mermaid.initialize({ startOnLoad: false });
   </script>
+  <script src="./static/docsify-mermaid-toggle.js"></script>
 </body>
 </html>
