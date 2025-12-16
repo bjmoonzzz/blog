@@ -458,19 +458,19 @@ int hostapd_dpp_chirp(struct hostapd_data *hapd, const char *cmd)
 }
 ```
 
-### 5. 完整流程：从 meshd 到 CCE IE 广播
+### 5. 完整流程：从 meshMgmt 到 CCE IE 广播
 
 ```mermaid
 sequenceDiagram
-    participant meshd as meshd<br/>(EasyMesh Controller)
+    participant meshMgmt as meshMgmt<br/>(EasyMesh Controller)
     participant ctrl as ctrl_iface
     participant hostapd as hostapd
     participant beacon as Beacon Module
     participant driver as Wi-Fi Driver
 
-    Note over meshd: 决定启用 Configurator
+    Note over meshMgmt: 决定启用 Configurator
 
-    meshd->>ctrl: 配置文件设置<br/>dpp_configurator_connectivity=1
+    meshMgmt->>ctrl: 配置文件设置<br/>dpp_configurator_connectivity=1
     ctrl->>hostapd: 加载配置
     hostapd->>hostapd: hostapd_dpp_configurator_connectivity()<br/>返回 true
 
@@ -492,9 +492,9 @@ sequenceDiagram
         driver-->>driver: 广播 Beacon 帧<br/>(包含 CCE IE)
     end
 
-    Note over meshd: Enrollee 扫描到<br/>带 CCE IE 的 Beacon
+    Note over meshMgmt: Enrollee 扫描到<br/>带 CCE IE 的 Beacon
 
-    meshd->>ctrl: DPP_CHIRP own=1<br/>(Enrollee 发送 Chirp)
+    meshMgmt->>ctrl: DPP_CHIRP own=1<br/>(Enrollee 发送 Chirp)
 ```
 
 ### 6. 关键要点总结
@@ -610,15 +610,15 @@ echo "dpp_configurator_connectivity=1" >> /etc/hostapd/hostapd.conf
 
 ```mermaid
 sequenceDiagram
-    participant meshd as meshd
+    participant meshMgmt as meshMgmt
     participant hostapd as hostapd<br/>(Configurator)
     participant driver1 as AP Driver
     participant air as 空中传输
     participant driver2 as STA Driver
     participant supplicant as wpa_supplicant<br/>(Enrollee)
 
-    Note over meshd,hostapd: 阶段 1: Configurator 准备
-    meshd->>hostapd: 配置 dpp_configurator_connectivity=1
+    Note over meshMgmt,hostapd: 阶段 1: Configurator 准备
+    meshMgmt->>hostapd: 配置 dpp_configurator_connectivity=1
     hostapd->>hostapd: hostapd_eid_dpp_cc()<br/>构造 CCE IE
     hostapd->>driver1: 设置 Beacon 模板<br/>(包含 CCE IE)
     
@@ -627,7 +627,7 @@ sequenceDiagram
     end
 
     Note over supplicant,air: 阶段 2: Enrollee 扫描
-    meshd->>supplicant: 触发扫描
+    meshMgmt->>supplicant: 触发扫描
     supplicant->>driver2: 扫描请求
     driver2->>air: Probe Request
     air->>driver2: Probe Response (含 CCE IE)
@@ -635,7 +635,7 @@ sequenceDiagram
     supplicant->>supplicant: wpa_bss_update_scan_res()<br/>存储到 BSS 表
 
     Note over supplicant: 阶段 3: 构建 Chirp 频段列表
-    meshd->>supplicant: DPP_CHIRP own=1
+    meshMgmt->>supplicant: DPP_CHIRP own=1
     supplicant->>supplicant: wpas_dpp_chirp_scan_res_handler()
     
     loop 遍历 BSS 表
@@ -752,7 +752,7 @@ wpas_dpp_chirp()
 4. **状态机驱动**: 通过 eloop 定时器驱动频段遍历
 
 #### 实际应用
-1. **meshd 角色**: 通过 ctrl_iface 控制 hostapd/wpa_supplicant
+1. **meshMgmt 角色**: 通过 ctrl_iface 控制 hostapd/wpa_supplicant
 2. **配置简单**: Configurator 只需配置文件，Enrollee 一条命令
 3. **自动发现**: CCE IE 实现 Configurator 自动发现机制
 4. **高效组网**: 频段优化减少 Chirp 时间，提高配置效率
