@@ -17,6 +17,7 @@
   - [WPA_RSN_COMPLETE_GUIDE](dpp/WPA_RSN_COMPLETE_GUIDE.md)
   - [WPA_STATE_MACHINE_DETAILS](dpp/WPA_STATE_MACHINE_DETAILS.md)
 - [dpp_new](dpp_new/)
+  - [dpp_CCE_and_Chirp](dpp_new/dpp_CCE_and_Chirp.md)
   - [DPP_DETAILED_CODE_WALKTHROUGH](dpp_new/DPP_DETAILED_CODE_WALKTHROUGH.md)
   - [DPP_KEY_FLOW_ANALYSIS](dpp_new/DPP_KEY_FLOW_ANALYSIS.md)
   - [DPP_拾遗](dpp_new/DPP_拾遗.md)
